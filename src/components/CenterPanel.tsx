@@ -1,5 +1,6 @@
-import { ChevronRight, Folder, Play, Rocket } from "lucide-react";
-import GrassBlock from "./GrassBlock";
+import { useState } from "react";
+import { Folder, Play, Rocket } from "lucide-react";
+import VersionSelector from "./VersionSelector";
 
 export default function CenterPanel() {
   return (
@@ -56,6 +57,8 @@ function NewsHero() {
 }
 
 function QuickLaunch() {
+  const [version, setVersion] = useState("1.20.4");
+
   return (
     <article className="card p-5 flex-1 min-h-0 flex flex-col gap-4">
       <header className="flex items-center gap-3">
@@ -65,18 +68,7 @@ function QuickLaunch() {
         <h3 className="text-base font-semibold">Быстрый запуск</h3>
       </header>
 
-      <button type="button" className="row-btn !py-3.5">
-        <div className="flex items-center gap-3">
-          <div className="h-9 w-9 flex items-center justify-center">
-            <GrassBlock size={32} />
-          </div>
-          <div className="text-left">
-            <div className="text-sm font-medium">Последняя версия</div>
-            <div className="text-xs text-white/55">1.20.4</div>
-          </div>
-        </div>
-        <ChevronRight className="h-4 w-4 text-white/40" />
-      </button>
+      <VersionSelector value={version} onChange={setVersion} />
 
       <div className="mt-auto grid grid-cols-[1.55fr_1fr] gap-3">
         <button

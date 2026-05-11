@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply font-sans antialiased;
+    background: #0a0d12;
+    overflow: hidden;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl bg-bg-card border border-border-card shadow-card;
+  }
+
+  .row-btn {
+    @apply flex items-center justify-between gap-3 rounded-xl bg-bg-cardHover/80 hover:bg-bg-cardHover transition-colors px-4 py-3 border border-border-subtle;
+  }
+
+  .icon-tile {
+    @apply flex items-center justify-center rounded-lg bg-white/[0.04] border border-white/5;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.16);
+}

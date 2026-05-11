@@ -1,18 +1,23 @@
-import TopBar from "./components/TopBar";
-import LeftPanel from "./components/LeftPanel";
-import CenterPanel from "./components/CenterPanel";
-import RightPanel from "./components/RightPanel";
+import { useState } from "react";
+import TopBar, { type TabId } from "./components/TopBar";
+import HomePage from "./pages/HomePage";
+import NewsPage from "./pages/NewsPage";
+import SettingsPage from "./pages/SettingsPage";
+import ModsPage from "./pages/ModsPage";
+import ProfilePage from "./pages/ProfilePage";
 
 export default function App() {
+  const [tab, setTab] = useState<TabId>("home");
+
   return (
     <div className="h-screen w-screen bg-app-bg text-white overflow-hidden flex flex-col">
-      <TopBar />
+      <TopBar active={tab} onChange={setTab} />
       <main className="flex-1 min-h-0 px-6 pb-6 pt-2">
-        <div className="h-full grid grid-cols-[300px_minmax(0,1fr)_300px] gap-6">
-          <LeftPanel />
-          <CenterPanel />
-          <RightPanel />
-        </div>
+        {tab === "home" && <HomePage />}
+        {tab === "news" && <NewsPage />}
+        {tab === "settings" && <SettingsPage />}
+        {tab === "mods" && <ModsPage />}
+        {tab === "profile" && <ProfilePage />}
       </main>
     </div>
   );

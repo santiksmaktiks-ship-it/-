@@ -1,7 +1,9 @@
 # Test Plan — Minecraft Launcher UI (PR #1)
 
 ## What changed
-Brand-new Electron + React + Vite + Tailwind UI for a Minecraft launcher, designed to match a user-supplied screenshot. Renderer is in `src/`, Electron main/preload in `electron/`. No prior behavior to compare to — this is a fresh UI.
+Brand-new Electron + React + Vite + Tailwind UI for a Minecraft launcher, designed to match a user-supplied screenshot. Renderer is in `src/`, Electron main/preload in `electron/`.
+
+**Latest update:** the version row in the `Быстрый запуск` card now reads `Версия` (was `Последняя версия`) and clicking it opens a dropdown listbox with versions from `1.21.5` down to `1.7.10`.
 
 ## Primary flow
 Launch the production-built Electron app (`npm run build && electron .`) and verify the rendered window matches the reference screenshot **structurally and textually**, and that the `Играть` / `Запустить игру` / `Папка с игрой` buttons fire the IPC stubs without crashing.
@@ -23,8 +25,13 @@ Each assertion is chosen so a broken implementation (missing component, wrong te
    - **Fail signal if broken:** any of these missing, wrong order, no green dot on "Онлайн".
 
 4. **Center — news hero + quick launch**
-   - **Pass:** News card shows the badge `новость`, title `Обновление лаунчера`, body containing both `Мы улучшили производительность` and `и добавили новые функции`, a `Подробнее` button, and 3 dot indicators (1st active). Below: `Быстрый запуск` header with rocket icon, row `Последняя версия / 1.20.4` with grass-block icon, and exactly two action buttons: `Запустить игру` (primary, wider, blue) and `Папка с игрой` (secondary, with folder icon).
-   - **Fail signal if broken:** wrong title text, missing version "1.20.4", only one action button, missing pagination dots.
+   - **Pass:** News card shows the badge `новость`, title `Обновление лаунчера`, body containing both `Мы улучшили производительность` and `и добавили новые функции`, a `Подробнее` button, and 3 dot indicators (1st active). Below: `Быстрый запуск` header with rocket icon, row `Версия / 1.20.4` with grass-block icon (label MUST read `Версия`, NOT `Последняя версия`), and exactly two action buttons: `Запустить игру` (primary, wider, blue) and `Папка с игрой` (secondary, with folder icon).
+   - **Fail signal if broken:** wrong label (`Последняя версия`), missing default version `1.20.4`, only one action button, missing pagination dots.
+
+4b. **Version dropdown — open / list / select / close**
+   - **Action:** Click the version row (the one labeled `Версия`).
+   - **Pass:** A popover opens directly beneath the row containing a scrollable list with `1.21.5` at the top and `1.7.10` at the bottom. The currently selected version (`1.20.4`) is highlighted with a check icon. Clicking another version (e.g. `1.7.10`) updates the subtitle text under `Версия` to the chosen version and closes the popover. Clicking outside closes the popover without changing selection.
+   - **Fail signal if broken:** dropdown does not open, list does not contain `1.21.5` and `1.7.10`, selection does not update the subtitle, popover stays open after selection or outside click.
 
 5. **Right panel — online status + useful**
    - **Pass:** Card `Онлайн статус` with blue indicator dot, big number `2537`, subtitle `игроков онлайн`, and a `Серверы` button with chevron. Below: header `Полезное` with 3 rows: `Инструкции` (book icon), `Поддержка` (help icon), `Наш сайт` (globe icon).

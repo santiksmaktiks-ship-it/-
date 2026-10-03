@@ -36,7 +36,7 @@ public class CallActivity extends Activity {
         setContentView(web);
         web.loadUrl(url);
     }
-    @Override protected void onRequestPermissionsResult(int r,String[] p,int[] g){
+    @Override public void onRequestPermissionsResult(int r,String[] p,int[] g){
         super.onRequestPermissionsResult(r,p,g); if(r==900 && web!=null) web.reload();
     }
     @Override public void onBackPressed(){ if(web!=null && web.canGoBack()) web.goBack(); else super.onBackPressed(); }

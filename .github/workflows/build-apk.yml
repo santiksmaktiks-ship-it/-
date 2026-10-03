@@ -1,5 +1,6 @@
 name: Build Nova Messenger APK
 on:
+  pull_request:
   push:
     branches: [main]
   workflow_dispatch:
@@ -14,11 +15,13 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '9.6.0'
+      - name: Install Gradle
+        run: |
+          curl -fsSL https://services.gradle.org/distributions/gradle-8.11.1-bin.zip -o /tmp/gradle.zip
+          unzip -q /tmp/gradle.zip -d /opt
+          /opt/gradle-8.11.1/bin/gradle --version
       - name: Build debug APK
-        run: gradle --no-daemon :app:assembleDebug
+        run: /opt/gradle-8.11.1/bin/gradle --no-daemon :app:assembleDebug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:

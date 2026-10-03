@@ -1,5 +1,6 @@
 name: Build Nova Messenger APK
 on:
+  pull_request:
   push:
     branches: [main]
   workflow_dispatch:
@@ -16,7 +17,7 @@ jobs:
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '9.6.0'
+          gradle-version: '8.11.1'
       - name: Build debug APK
         run: gradle --no-daemon :app:assembleDebug
       - name: Upload APK

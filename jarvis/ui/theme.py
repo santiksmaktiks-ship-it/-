@@ -1,0 +1,5 @@
+BG="#0b0f14"
+PANEL="#111821"
+TEXT="#e8eef5"
+ACCENT="#243241"
+FONT=("Segoe UI",12)

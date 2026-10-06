@@ -1,22 +1,20 @@
-# JARVIS AI
+# JARVIS AI Windows
 
-Windows desktop AI assistant with:
-- real AI chat through OpenAI API
-- Russian/English voice recognition
-- hold-to-talk microphone button
-- text chat
-- AI voice replies
-- microphone and headphone/device selection
-- local settings storage
-- Windows EXE build via PyInstaller
+Модульный Windows AI-assistant.
 
-## Run
-1. Install Python 3.11+.
-2. Run `build.bat`.
-3. Start `dist\\JarvisAI.exe`.
-4. Open Settings and enter your OpenAI API key.
+## Архитектура
+- main.py — запуск
+- jarvis/ai/ — AI, распознавание речи и TTS
+- jarvis/audio/ — микрофон, устройства, запись и проигрывание
+- jarvis/chat/ — контекст и память диалога
+- jarvis/commands/ — маршрутизация команд
+- jarvis/memory/ — локальное хранилище
+- jarvis/security/ — работа с секретами
+- jarvis/core/ — события, состояние, логирование
+- jarvis/ui/ — интерфейс
+- jarvis/utils/ — системные утилиты
+- jarvis/config.py — настройки
 
-The API key is stored locally in %APPDATA%\\JarvisAssistant\\config.json and is never committed to GitHub.
+API key вводится в Settings и не коммитится в GitHub.
 
-## Build on GitHub
-GitHub Actions builds `JarvisAI.exe` automatically on Windows when code is pushed. The EXE is uploaded as a workflow artifact.
+Сборка: GitHub Actions создаёт JarvisAI.exe.

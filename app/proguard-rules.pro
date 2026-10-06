@@ -1,1 +1,0 @@
-# Nova Messenger release rules

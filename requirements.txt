@@ -1,0 +1,4 @@
+requests>=2.31.0
+sounddevice>=0.4.6
+numpy>=1.26.0
+pyinstaller>=6.10.0

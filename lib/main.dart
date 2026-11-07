@@ -95,7 +95,7 @@ class _NovaHomeState extends State<NovaHome> {
                       duration: const Duration(milliseconds: 850),
                       curve: Curves.easeOutBack,
                       builder: (context, value, child) => Opacity(
-                        opacity: value.clamp(0, 1),
+                        opacity: value.clamp(0.0, 1.0).toDouble(),
                         child: Transform.translate(
                           offset: Offset(0, 18 * (1 - value)),
                           child: child,
@@ -274,10 +274,10 @@ class _NovaHomeState extends State<NovaHome> {
   Widget _messageBubble(String message, int index) => TweenAnimationBuilder<double>(
         key: ValueKey('message-$index-$message'),
         tween: Tween(begin: 0, end: 1),
-        duration: Duration(milliseconds: 420 + (index.clamp(0, 5) * 70)),
+        duration: Duration(milliseconds: 420 + (index.clamp(0, 5).toInt() * 70)),
         curve: Curves.easeOutCubic,
         builder: (context, value, child) => Opacity(
-          opacity: value.clamp(0, 1),
+          opacity: value.clamp(0.0, 1.0).toDouble(),
           child: Transform.translate(offset: Offset(0, 16 * (1 - value)), child: child),
         ),
         child: Padding(

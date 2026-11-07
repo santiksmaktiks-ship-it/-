@@ -1,23 +1,27 @@
 # NOVA Messenger
 
-NOVA is a cross-platform messenger built with Flutter. This repository replaces the previous project contents with the NOVA application scaffold.
+NOVA 0.2 is a Flutter messenger foundation for Android and Windows.
 
-## Features in this starter
-- Dark NOVA interface with responsive navigation
-- Servers, channels, direct messages and a chat composer
-- Theme-ready Material 3 foundation
-- GitHub Actions workflow for Android APK and Windows installer EXE
+## Included in this update
+- White theme by default, with a dark theme switch in Settings.
+- Local account registration and login; passwords are stored as SHA-256 hashes with per-account salts.
+- Profile name editing and logout.
+- Create, select, and delete conversations.
+- Separate message history for every conversation.
+- Local persistence for accounts, session, chats, and messages.
+- Responsive mobile and desktop layout.
+- GitHub Actions builds Android APK and Windows installer.
 
-## Build locally
-Install Flutter stable and enable Windows desktop support for Windows builds.
+## Important scope
+This is a single-device local prototype. Registration is stored on the device and does not create a cloud account. Chats and messages are local and are not delivered to other people or synchronized across devices. Real multi-user messaging requires a backend, authentication API, database, and real-time transport. Voice/video calls are not included in this release.
 
-```bash
-flutter pub get
-flutter run
-flutter build apk --release
-flutter build windows --release
-```
+## Build
+Install Flutter stable, then run:
 
-The Windows build is packaged by CI with Inno Setup so the release ZIP can contain exactly two deliverables: `NOVA.apk` and `NOVA.exe`.
+    flutter pub get
+    flutter run
+    flutter test
+    flutter build apk --release
+    flutter build windows --release
 
-> This is the initial app scaffold. Voice/video, authentication, persistence, backend sync and end-to-end encryption are not implemented yet.
+GitHub Actions packages the Android APK and Windows installer into a ZIP containing exactly NOVA.apk and NOVA.exe.

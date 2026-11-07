@@ -1,22 +1,67 @@
-name: Build Jarvis EXE
+name: Build NOVA
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
+  push:
+    branches: [main]
+    tags: ['v*']
 
 jobs:
-  build:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter pub get
+      - run: flutter build apk --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NOVA-Android
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: subosito/flutter-action@v2
         with:
-          python-version: '3.11'
-      - run: python -m pip install --upgrade pip
-      - run: pip install -r requirements.txt
-      - run: pyinstaller --noconfirm --clean --onefile --windowed --name JarvisAI jarvis.py
+          channel: stable
+      - run: flutter config --enable-windows-desktop
+      - run: flutter pub get
+      - run: flutter build windows --release
+      - name: Install Inno Setup
+        run: choco install innosetup --yes --no-progress
+      - name: Package installer
+        shell: pwsh
+        run: |
+          $source = "build/windows/x64/runner/Release"
+          $iss = @'
+          [Setup]
+          AppName=NOVA
+          AppVersion=0.1.0
+          DefaultDirName={autopf}\NOVA
+          DefaultGroupName=NOVA
+          OutputDir=dist
+          OutputBaseFilename=NOVA
+          ArchitecturesInstallIn64BitMode=x64
+          Compression=lzma
+          SolidCompression=yes
+          [Files]
+          Source: "..\build\windows\x64\runner\Release\*"; DestDir: "{app}"; Flags: recursesubdirs
+          [Icons]
+          Name: "{group}\NOVA"; Filename: "{app}\nova_messenger.exe"
+          Name: "{autodesktop}\NOVA"; Filename: "{app}\nova_messenger.exe"
+          '@
+          New-Item -ItemType Directory -Force -Path installer | Out-Null
+          Set-Content -Path installer\NOVA.iss -Value $iss
+          iscc installer\NOVA.iss
+          New-Item -ItemType Directory -Force -Path package | Out-Null
+          Copy-Item build\app\outputs\flutter-apk\app-release.apk package\NOVA.apk
+          Copy-Item dist\NOVA.exe package\NOVA.exe
+          Compress-Archive -Path package\NOVA.apk,package\NOVA.exe -DestinationPath NOVA-release.zip -Force
       - uses: actions/upload-artifact@v4
         with:
-          name: JarvisAI-Windows
-          path: dist/JarvisAI.exe
+          name: NOVA-APK-and-EXE
+          path: NOVA-release.zip

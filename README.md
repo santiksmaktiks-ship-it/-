@@ -1,20 +1,23 @@
-# JARVIS AI Windows
+# NOVA Messenger
 
-Модульный Windows AI-assistant.
+NOVA is a cross-platform messenger built with Flutter. This repository replaces the previous project contents with the NOVA application scaffold.
 
-## Архитектура
-- main.py — запуск
-- jarvis/ai/ — AI, распознавание речи и TTS
-- jarvis/audio/ — микрофон, устройства, запись и проигрывание
-- jarvis/chat/ — контекст и память диалога
-- jarvis/commands/ — маршрутизация команд
-- jarvis/memory/ — локальное хранилище
-- jarvis/security/ — работа с секретами
-- jarvis/core/ — события, состояние, логирование
-- jarvis/ui/ — интерфейс
-- jarvis/utils/ — системные утилиты
-- jarvis/config.py — настройки
+## Features in this starter
+- Dark NOVA interface with responsive navigation
+- Servers, channels, direct messages and a chat composer
+- Theme-ready Material 3 foundation
+- GitHub Actions workflow for Android APK and Windows installer EXE
 
-API key вводится в Settings и не коммитится в GitHub.
+## Build locally
+Install Flutter stable and enable Windows desktop support for Windows builds.
 
-Сборка: GitHub Actions создаёт JarvisAI.exe.
+```bash
+flutter pub get
+flutter run
+flutter build apk --release
+flutter build windows --release
+```
+
+The Windows build is packaged by CI with Inno Setup so the release ZIP can contain exactly two deliverables: `NOVA.apk` and `NOVA.exe`.
+
+> This is the initial app scaffold. Voice/video, authentication, persistence, backend sync and end-to-end encryption are not implemented yet.

@@ -12,7 +12,7 @@
 | CurseForge API permission/key | Excluded from initial release | Explicit scope decision: no CurseForge integration until official permission and credentials are obtained. No scraping. |
 | Modrinth | Planned, not yet contract-tested | Use official API documentation, respect rate limits, and add contract tests before claiming support. |
 | Code-signing certificate | Not supplied | Optional per brief. Unsigned builds must be labelled honestly. |
-| NIVA icon | Not yet created | Create original artwork; do not imitate third-party marks. |
+| NIVA icon | Created and committed | Original SVG, 512px PNG, and 6-size Windows ICO are in `assets/brand/`; see [Brand assets](BRAND_ASSETS.md). Electron packaging integration is still pending. |
 | Legal test accounts | Not supplied | Use only owner-controlled, legitimately licensed accounts for authentication and launch testing. |
 
 ## Secret handling

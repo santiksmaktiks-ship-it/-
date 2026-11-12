@@ -4,8 +4,9 @@
 |---|---|---|
 | GitHub repository | Available | Connected account has admin/write permission on `santiksmaktiks-ship-it/-`. |
 | GitHub default branch | Available | `main`. |
-| Windows CI runner | Configured, awaiting run evidence | `.github/workflows/windows-readiness.yml` uses a Windows x64 GitHub-hosted runner to inspect toolchain availability. |
-| Clean Windows 10/11 desktop validation | Missing | Must execute the manual checks in [Windows release checklist](WINDOWS_RELEASE_CHECKLIST.md). A CI runner alone is not desktop acceptance. |
+| Windows x64 CI runner | Verified | Run [#6](https://github.com/santiksmaktiks-ship-it/-/actions/runs/43269820705) succeeded on Microsoft Windows Server 2025 x64; OS build 10.0.26100. |
+| Windows toolchain | Verified | Run #6: Node.js v22.23.4, npm 10.9.9, Git 2.56.0.windows.4. |
+| Clean Windows 10/11 desktop validation | Missing | Windows Server runner is not a clean consumer desktop. Execute [Windows release checklist](WINDOWS_RELEASE_CHECKLIST.md) on clean Windows 10 and Windows 11 x64 systems. |
 | Azure App Registration | Unconfirmed | No public-client Application (client) ID has been confirmed. Live sign-in must remain unavailable until a real registration is configured. |
 | Microsoft OAuth production flow | Blocked | Requires real client registration and live Microsoft/Xbox/Minecraft account-flow testing. |
 | CurseForge API permission/key | Excluded from initial release | Explicit scope decision: no CurseForge integration until official permission and credentials are obtained. No scraping. |

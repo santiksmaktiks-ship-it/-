@@ -2,7 +2,7 @@
 
 **Current gate: Stage 0, blocked.**
 
-Repository bootstrap, legacy-project cleanup, scope decisions, and the Windows CI readiness probe are now committed. The NIVA desktop application itself has not been implemented. Stage 1 must not be reported as started or completed until the master brief's Stage 0 gate is satisfied.
+Repository bootstrap, legacy-project cleanup, scope decisions, and a successful Windows x64 CI toolchain probe are committed. The NIVA desktop application itself has not been implemented. Stage 1 must not be reported as started or completed until the master brief's Stage 0 gate is satisfied.
 
 ## Verified
 
@@ -11,15 +11,19 @@ Repository bootstrap, legacy-project cleanup, scope decisions, and the Windows C
 - Default branch: `main`.
 - Previous Flutter source and its old workflow are absent from the current branch.
 - Current development environment is Linux x86_64 with Node.js v22.16.0 and Git 2.47.3.
-- A Windows x64 GitHub Actions readiness workflow has been committed at `.github/workflows/windows-readiness.yml`.
-- A clean Windows 10/11 manual acceptance checklist has been committed at `docs/WINDOWS_RELEASE_CHECKLIST.md`.
+- Windows x64 GitHub Actions readiness run #5 passed: [run 43259647479](https://github.com/santiksmaktiks-ship-it/-/actions/runs/43259647479).
+- Updated Windows x64 GitHub Actions readiness run #6 passed: [run 43269820705](https://github.com/santiksmaktiks-ship-it/-/actions/runs/43269820705).
+- Run #6 used a Microsoft Windows Server 2025 x64 runner, reported OS build 10.0.26100, Node.js v22.23.4, npm 10.9.9, and Git 2.56.0.windows.4.
+- All steps in run #6 completed successfully. Its workflow log did not show the Node 20 deprecation warning seen in run #5.
+- The workflow uses actions/checkout@v7.0.1 and actions/setup-node@v7.1.0.
+- A clean Windows 10/11 desktop acceptance checklist is committed at `docs/WINDOWS_RELEASE_CHECKLIST.md`.
 - The initial scope decision excludes CurseForge until official access is approved.
 
 ## Blocking items
 
-1. **Clean Windows desktop testing:** the GitHub-hosted Windows runner can validate CI tooling, but it is not proof of install/launch behavior on clean Windows 10 and Windows 11 desktop systems. Those manual checks remain required before release.
+1. **Clean Windows desktop testing:** CI runner readiness is now verified, but the runner was Windows Server 2025, not a clean consumer Windows 10/11 desktop. Install, launch, upgrade, uninstall, and portable-mode acceptance remain untested on those target desktop environments.
 2. **Microsoft OAuth:** Azure App Registration and a real public-client Application (client) ID are not confirmed. Authentication must remain unavailable until configured and tested with a legitimate account.
-3. **Release acceptance:** there is no implemented app, installer, portable package, or verified release. Code signing is optional; clean Windows validation is mandatory.
+3. **Release acceptance:** there is no implemented app, installer, portable package, or verified release. Code signing is optional; clean Windows desktop validation is mandatory.
 
 ## Decisions made autonomously
 
@@ -27,6 +31,7 @@ Repository bootstrap, legacy-project cleanup, scope decisions, and the Windows C
 - Microsoft OAuth remains a required product capability and will use the official Authorization Code Flow with PKCE. No fake account, placeholder token, or third-party authentication relay will be used.
 - Modrinth integration will use the official documented API only.
 - GitHub Actions Windows x64 jobs will be used for automated Windows builds and checks. Separate clean desktop testing is still mandatory.
+- GitHub Actions checkout/setup actions were updated to Node 24-compatible releases to remove the previous Node 20 runtime warning.
 - No secrets are stored in source control.
 
 See [Architecture decisions](DECISIONS.md), [Access matrix](ACCESS_MATRIX.md), and [Windows release checklist](WINDOWS_RELEASE_CHECKLIST.md).
@@ -34,6 +39,7 @@ See [Architecture decisions](DECISIONS.md), [Access matrix](ACCESS_MATRIX.md), a
 ## Stage 0 acceptance checklist
 
 - [x] GitHub repository exists and write/admin access verified.
+- [x] Windows x64 CI runner toolchain verified.
 - [ ] Clean Windows 10/11 x64 desktop test path confirmed and executed.
 - [ ] Azure App Registration client ID confirmed.
 - [x] CurseForge explicitly excluded from the initial release pending approval.

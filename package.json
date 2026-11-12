@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "node --test tests/*.test.cjs",
     "build": "npm run typecheck && vite build",
-    "dist:win": "npm run build && electron-builder --win nsis portable --x64",
+    "dist:win": "npm run build && electron-builder --win nsis portable --x64 --publish never",
     "dist:win:dir": "npm run build && electron-builder --dir --win --x64"
   },
   "dependencies": {
@@ -32,7 +32,9 @@
     "appId": "com.niva.launcher",
     "productName": "NIVA Launcher",
     "asar": true,
-    "directories": { "output": "release" },
+    "directories": {
+      "output": "release"
+    },
     "files": [
       "dist/**/*",
       "src/main/**/*",
@@ -44,8 +46,18 @@
     "win": {
       "icon": "assets/brand/icon.ico",
       "target": [
-        { "target": "nsis", "arch": ["x64"] },
-        { "target": "portable", "arch": ["x64"] }
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
       ]
     },
     "nsis": {
@@ -60,5 +72,7 @@
       "artifactName": "NIVA-Launcher-Portable-${version}-x64.${ext}"
     },
     "artifactName": "NIVA-Launcher-Setup-${version}-x64.${ext}"
-  }
+  },
+  "type": "module",
+  "author": "NIVA Launcher"
 }

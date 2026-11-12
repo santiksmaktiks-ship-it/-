@@ -19,6 +19,7 @@ Repository bootstrap, legacy-project cleanup, scope decisions, and a successful 
 - The workflow pins actions/checkout and actions/setup-node to full commit SHAs. Run #10 confirmed those exact SHAs were checked out and the job passed.
 - A clean Windows 10/11 desktop acceptance checklist is committed at `docs/WINDOWS_RELEASE_CHECKLIST.md`.
 - The initial scope decision excludes CurseForge until official access is approved.
+- Original NIVA artwork is committed as SVG, PNG, and multi-resolution Windows ICO at `assets/brand/`; see [Brand assets](BRAND_ASSETS.md).
 
 ## Blocking items
 

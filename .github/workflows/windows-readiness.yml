@@ -1,0 +1,59 @@
+name: Windows toolchain readiness
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/windows-readiness.yml"
+      - "docs/**"
+      - "README.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-readiness-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  inspect-windows-runner:
+    name: Inspect Windows x64 runner
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Verify runner architecture and toolchain
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          Write-Host "OS: $([System.Runtime.InteropServices.RuntimeInformation]::OSDescription)"
+          Write-Host "Architecture: $([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)"
+          Write-Host "Node: $(node --version)"
+          Write-Host "npm: $(npm --version)"
+          Write-Host "Git: $(git --version)"
+
+          if ([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture -ne "X64") {
+            throw "Expected an x64 Windows runner."
+          }
+
+          $nodeMajor = [int]((node --version).TrimStart("v").Split(".")[0])
+          if ($nodeMajor -lt 22) {
+            throw "Node.js 22 or later is required for the planned toolchain."
+          }
+
+          node -e "if (process.platform !== 'win32' || process.arch !== 'x64') process.exit(1); console.log('Node runtime: win32 x64')"
+
+      - name: Record acceptance limitation
+        shell: pwsh
+        run: |
+          Write-Host "This job verifies CI toolchain availability only."
+          Write-Host "It does NOT replace clean-machine testing on Windows 10/11 desktop."

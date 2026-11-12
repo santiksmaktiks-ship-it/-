@@ -1,5 +1,7 @@
 # NIVA LAUNCHER
 
+![NIVA Launcher original icon](assets/brand/icon.png)
+
 A secure, Windows-first Minecraft launcher for Windows 10/11 x64.
 
 > **Project status: Stage 0 is blocked.** This repository has been reset to the NIVA project baseline, but the application has not been implemented and there is no installer or release to download.

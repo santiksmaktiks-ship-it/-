@@ -27,7 +27,7 @@ NIVA is planned as an Electron + React + TypeScript desktop application. The tar
 
 ## Current gate
 
-See [Project status](docs/PROJECT_STATUS.md) and [Access matrix](docs/ACCESS_MATRIX.md). Implementation is intentionally paused until the Stage 0 blockers are resolved. This is required by the project brief; missing access or test evidence must not be disguised as a completed feature.
+See [Project status](docs/PROJECT_STATUS.md), [Access matrix](docs/ACCESS_MATRIX.md), and [Brand assets](docs/BRAND_ASSETS.md). Implementation is intentionally paused until the Stage 0 blockers are resolved. This is required by the project brief; missing access or test evidence must not be disguised as a completed feature.
 
 ## Planned engineering stack
 

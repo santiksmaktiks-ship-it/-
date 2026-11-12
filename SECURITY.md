@@ -6,18 +6,17 @@ Do not publish exploitable details in a public issue. Report suspected vulnerabi
 
 ## Security requirements
 
-- No secrets or user tokens in source control, logs, crash reports, or renderer state.
-- Microsoft authentication must use the official OAuth flow with PKCE and a registered client.
-- CurseForge must remain unavailable until API permission and credentials are confirmed.
-- Renderer must not receive Node.js, filesystem, process, or credential access.
-- All IPC inputs, network responses, paths, and archive entries must be validated.
-- Archive extraction must defend against path traversal and resource-exhaustion attacks.
-- Repair and restore operations must preserve user worlds and configuration, with backup and rollback.
+- No passwords, account tokens, API keys, certificates, or private keys in source control.
+- NIVA 0.1.0 does not implement Microsoft authentication and does not handle Minecraft credentials.
+- Do not implement cracked/offline authentication, token reuse, third-party auth relays, or licensing bypasses.
+- Renderer must not receive Node.js, filesystem, process, or shell access.
+- All IPC inputs and local state are validated.
+- Persist state using atomic writes and never overwrite unreadable state without recovery.
+- Do not delete Minecraft worlds, saves, configs, screenshots, or backups during profile deletion or repair.
+- Archive extraction, network services, and mod installation are not enabled in the preview. They must be threat-modeled and tested before implementation.
+- GitHub Actions are pinned to reviewed full commit SHAs, with least-privilege contents access.
 - Release artifacts must be built by CI, checksummed, and tested on Windows before being described as ready.
-- GitHub Actions must be pinned to reviewed full commit SHAs, with a human-readable version comment.
-- Dependabot is configured to propose dependency updates; updates must still be reviewed and tested before merge.
-- CI permissions must use the minimum access required. The readiness workflow uses read-only repository contents permission and disables persisted checkout credentials.
 
 ## Supported platform
 
-The target is Windows 10/11 x64. Security claims remain unverified until the corresponding implementation and test evidence exist.
+The target is Windows 10/11 x64. CI packaging checks are not a substitute for installation and launch testing on clean Windows desktop systems.

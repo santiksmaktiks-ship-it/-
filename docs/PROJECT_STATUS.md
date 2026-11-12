@@ -1,55 +1,55 @@
 # Project status
 
-**Current gate: Stage 0, blocked.**
+**Current milestone: 0.1.0 preview implementation and Windows EXE packaging.**
 
-Repository bootstrap, legacy-project cleanup, scope decisions, and a successful Windows x64 CI toolchain probe are committed. The NIVA desktop application itself has not been implemented. Stage 1 must not be reported as started or completed until the master brief's Stage 0 gate is satisfied.
+The owner has removed the requirement for Microsoft sign-in inside NIVA. The app will hand off to the official Minecraft Launcher instead. It does not implement cracked/offline authentication or bypass account/licence requirements.
 
-## Verified
+## Implemented in the current branch
 
-- The connected GitHub identity has repository admin and write access.
-- Repository: `santiksmaktiks-ship-it/-`.
-- Default branch: `main`.
-- Previous Flutter source and its old workflow are absent from the current branch.
-- Current development environment is Linux x86_64 with Node.js v22.16.0 and Git 2.47.3.
-- Windows x64 GitHub Actions readiness run #5 passed: [run 43259647479](https://github.com/santiksmaktiks-ship-it/-/actions/runs/43259647479).
-- Updated Windows x64 GitHub Actions readiness run #6 passed: [run 43269820705](https://github.com/santiksmaktiks-ship-it/-/actions/runs/43269820705).
-- Pinned-action Windows x64 readiness run #10 passed: [run 43283097663](https://github.com/santiksmaktiks-ship-it/-/actions/runs/43283097663).
-- Readiness workflow refinement run #18 passed: [run 43284543150](https://github.com/santiksmaktiks-ship-it/-/actions/runs/43284543150).
-- Run #6 used a Microsoft Windows Server 2025 x64 runner, reported OS build 10.0.26100, Node.js v22.23.4, npm 10.9.9, and Git 2.56.0.windows.4.
-- All steps in run #6 completed successfully. Its workflow log did not show the Node 20 deprecation warning seen in run #5.
-- The workflow pins actions/checkout and actions/setup-node to full commit SHAs. Runs #10 and #18 confirmed those exact SHAs were checked out and the jobs passed.
-- The workflow now triggers on application/build configuration changes and pull requests, and writes a concise Windows runner report to the Actions job summary.
-- A clean Windows 10/11 desktop acceptance checklist is committed at `docs/WINDOWS_RELEASE_CHECKLIST.md`.
-- The initial scope decision excludes CurseForge until official access is approved.
-- Original NIVA artwork is committed as SVG, PNG, and multi-resolution Windows ICO at `assets/brand/`; see [Brand assets](BRAND_ASSETS.md).
+- Electron + React + TypeScript + Vite application shell.
+- Hardened BrowserWindow with context isolation, sandbox, no renderer Node integration, CSP, and navigation restrictions.
+- Narrow preload API and validated IPC handlers.
+- Local NIVA state with schema validation and atomic writes.
+- Profile metadata create/select/delete for Vanilla, Fabric, Forge, NeoForge, and Quilt labels.
+- Dark/light theme and reduced-motion settings.
+- Open user data folder.
+- Official Minecraft Launcher hand-off or fallback to the official download page.
+- Original NIVA SVG, 512px PNG, and multi-resolution Windows ICO.
+- Unit tests for profile validation and state transitions.
+- Windows NSIS + portable EXE workflow, PE architecture validation, and SHA-256 generation.
 
-## Blocking items
+## Preview limitations
 
-1. **Clean Windows desktop testing:** CI runner readiness is now verified, but the runner was Windows Server 2025, not a clean consumer Windows 10/11 desktop. Install, launch, upgrade, uninstall, and portable-mode acceptance remain untested on those target desktop environments.
-2. **Microsoft OAuth:** Azure App Registration and a real public-client Application (client) ID are not confirmed. Authentication must remain unavailable until configured and tested with a legitimate account.
-3. **Release acceptance:** there is no implemented app, installer, portable package, or verified release. Code signing is optional; clean Windows desktop validation is mandatory.
+- Profile cards are metadata only; no Minecraft game directory is created or modified.
+- No Minecraft/Java downloader, loader installer, mod manager, modpack import, skin manager, backup/repair, or diagnostics yet.
+- No Microsoft OAuth inside NIVA. Authentication and the Play operation are delegated to the official launcher.
+- CurseForge is excluded; Modrinth is not yet implemented.
+- Windows CI packaging does not replace manual testing on a clean Windows 10/11 desktop.
 
-## Decisions made autonomously
+## Local validation completed before commit
 
-- CurseForge is excluded from the initial release unless official permission and API credentials are later obtained.
-- Microsoft OAuth remains a required product capability and will use the official Authorization Code Flow with PKCE. No fake account, placeholder token, or third-party authentication relay will be used.
-- Modrinth integration will use the official documented API only.
-- GitHub Actions Windows x64 jobs will be used for automated Windows builds and checks. Separate clean desktop testing is still mandatory.
-- GitHub Actions checkout/setup actions were updated to Node 24-compatible releases to remove the previous Node 20 runtime warning.
-- No secrets are stored in source control.
+- `node --check` passed for main, preload, shared profile model, and dev script.
+- `npm test`: 6 tests passed, 0 failed.
+- Full renderer typecheck and Windows EXE build must be confirmed by the new GitHub Actions workflow.
 
-See [Architecture decisions](DECISIONS.md), [Access matrix](ACCESS_MATRIX.md), and [Windows release checklist](WINDOWS_RELEASE_CHECKLIST.md).
+## Acceptance checklist
 
-## Stage 0 acceptance checklist
-
-- [x] GitHub repository exists and write/admin access verified.
+- [x] GitHub write/admin access.
 - [x] Windows x64 CI runner toolchain verified.
-- [ ] Clean Windows 10/11 x64 desktop test path confirmed and executed.
-- [ ] Azure App Registration client ID confirmed.
-- [x] CurseForge explicitly excluded from the initial release pending approval.
-- [x] Original project identity and target stack recorded.
-- [x] Release and manual test plan documented.
+- [x] Microsoft authentication removed from NIVA 0.1.0 scope at owner's request.
+- [x] CurseForge excluded until official permission exists.
+- [x] Original app icon committed in SVG, PNG, and ICO formats.
+- [x] Electron/React/TypeScript app shell committed.
+- [x] Profile metadata flows and settings implemented.
+- [x] Unit tests created and passed locally.
+- [ ] GitHub Actions renderer typecheck and build passed.
+- [ ] NSIS installer EXE and portable EXE successfully produced by Windows CI.
+- [ ] EXE/ZIP checksums and PE architecture validated by CI.
+- [ ] Downloaded artifacts manually installed and launched on clean Windows 10/11 x64.
 
-## Rule for continuing
+## Next steps
 
-Do not create fake authentication, fake API responses, production buttons backed by no-op handlers, or a release that implies the launcher is functional. Do not delete worlds, saves, configurations, screenshots, or backups during repair/uninstall. Record blockers honestly.
+1. Fix any failures in the first Windows build workflow.
+2. Retrieve the generated EXE and portable artifact for the owner.
+3. Wire the original ICO into the verified installer and complete clean Windows tests.
+4. Continue with real Minecraft metadata/install support only after 0.1.0 packaging is proven.

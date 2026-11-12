@@ -1,56 +1,54 @@
 # Architecture and scope decisions
 
-These decisions keep the initial release honest and avoid integrations that cannot currently be operated lawfully or tested.
+These decisions define the first distributable NIVA preview and keep authentication, game files, and external services honest.
 
-## Initial release scope
+## 0.1.0 preview scope
 
-### CurseForge: excluded until approval
+### Microsoft authentication: removed from NIVA
+
+- The owner has explicitly asked for a Windows EXE without Microsoft sign-in built into NIVA.
+- NIVA will not ask for Microsoft passwords, implement Microsoft OAuth, store access/refresh tokens, or relay authentication through another service.
+- The initial app hands off to the official Minecraft Launcher. Account sign-in and game licensing remain governed by that official client.
+- No cracked, offline-auth, token-reuse, or licensing-bypass mode will be implemented.
+
+### CurseForge: excluded
 
 - CurseForge is not part of the initial release.
 - No scraping, undocumented endpoints, key sharing, or file redistribution workaround is permitted.
-- The UI must not show a working CurseForge search/install path while access is unavailable.
-- Reconsider inclusion only after the project owner obtains the required API permission and credentials and the integration passes contract tests.
-
-### Microsoft account authentication: mandatory, but blocked on registration
-
-- Use the official Microsoft OAuth Authorization Code Flow with PKCE.
-- The public-client Application (client) ID must be supplied by a real Azure App Registration before live authentication can be enabled.
-- Do not generate a made-up ID, embed a client secret, use third-party auth relays, or create a fake signed-in account.
-- Until configured, authenticated launch features must report a clear setup error and remain unavailable.
+- Reconsider inclusion only after official permission and credentials are obtained and the integration passes contract tests.
 
 ### Modrinth
 
-- Use the official documented API only.
-- Respect documented rate limits and attribution/branding requirements.
-- Do not scrape web pages to fill gaps in API access.
+- Modrinth is planned for a later stage through the official documented API only.
+- Respect documented rate limits and attribution requirements. No scraping.
+
+## Current preview behavior
+
+- Local profile cards store only name, loader label, Minecraft version label, and creation date.
+- They do not install Minecraft, create instances, manage mods, or touch the user's `.minecraft` folder.
+- The official-launcher action looks for a legacy desktop launcher executable at common paths. If none is found, it opens the official Minecraft download page.
+- Settings and profile metadata are stored under Electron `userData`.
 
 ## Build and test strategy
 
-- Use GitHub Actions on a Windows x64 runner for repeatable Windows packaging and automated checks.
-- Windows x64 toolchain readiness passed on runs [#6](https://github.com/santiksmaktiks-ship-it/-/actions/runs/43269820705), [#10](https://github.com/santiksmaktiks-ship-it/-/actions/runs/43283097663), and [#18](https://github.com/santiksmaktiks-ship-it/-/actions/runs/43284543150).
-- The verified runner was Microsoft Windows Server 2025 x64, not a clean Windows 10/11 desktop installation.
-- CI success is not equivalent to acceptance on a clean Windows desktop.
-- Before release, perform a separate manual smoke test on clean Windows 10 and Windows 11 x64 systems, including install, launch, update, uninstall, and portable-mode checks.
+- Use GitHub Actions on Windows Server 2025 x64 for deterministic Windows packaging and automated checks.
+- Build NSIS setup EXE and portable EXE.
+- Validate output names, PE machine type (AMD64), and SHA-256 checksums.
+- CI success is not equivalent to acceptance on clean Windows 10/11 desktop systems. Install, launch, update, uninstall, and portable-mode manual checks remain release gates.
 - Unsigned builds must be identified as unsigned. Code signing is optional unless later supplied by the owner.
 
 ## GitHub Actions runtime
 
-- Pin `actions/checkout` to commit `3d3c42e5aac5ba805825da76410c181273ba90b1` (v7.0.1) and `actions/setup-node` to commit `949feb2413d6458794dcd2491c4babbbce0c15c1` (v7.1.0) in the readiness workflow.
-- Dependabot currently checks GitHub Actions weekly. npm updates are intentionally deferred until a real `package.json` exists; enabling the npm ecosystem before that caused a `package.json not found` Dependabot error.
-- These releases use the Node 24 action runtime; the setup-node action release notes describe the Node 24 migration and minimum runner requirements.
-- Keep `persist-credentials: false` on checkout when workflow steps do not need authenticated Git operations.
-- Keep `package-manager-cache: false` until a committed package manifest and explicit dependency cache policy exist.
-- Readiness checks trigger for workflow, app source, package manifest/lockfile, and build configuration changes, not documentation-only edits.
-- The job writes OS, architecture, Node, npm, and Git information to its GitHub Actions step summary.
-
-Official release references:
-- https://github.com/actions/checkout/releases
-- https://github.com/actions/setup-node/releases
+- Pin `actions/checkout` to commit `3d3c42e5aac5ba805825da76410c181273ba90b1` (v7.0.1).
+- Pin `actions/setup-node` to commit `949feb2413d6458794dcd2491c4babbbce0c15c1` (v7.1.0).
+- Pin `actions/upload-artifact` to commit `cf430e030ddbb5b0abf93d22962f4752f3646cd9` (v7.0.2).
+- Dependabot checks GitHub Actions and npm dependencies weekly.
 
 ## Security defaults
 
 - No telemetry without explicit consent.
 - No credentials or tokens in source control.
-- Keep secrets in OS-protected storage and keep renderer isolated from them.
+- Renderer has no direct Node.js, filesystem, process, or shell access.
+- Validate IPC input and persist local state with atomic writes.
 - Preserve user worlds, saves, configurations, and screenshots during repair and uninstall.
-- Make destructive operations explicit, backed up, and reversible where possible.
+- Destructive actions must be explicit and reversible where possible.

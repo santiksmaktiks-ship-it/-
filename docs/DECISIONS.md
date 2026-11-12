@@ -27,7 +27,7 @@ These decisions keep the initial release honest and avoid integrations that cann
 ## Build and test strategy
 
 - Use GitHub Actions on a Windows x64 runner for repeatable Windows packaging and automated checks.
-- Windows x64 toolchain readiness passed on run [#6](https://github.com/santiksmaktiks-ship-it/-/actions/runs/43269820705).
+- Windows x64 toolchain readiness passed on run [#6](https://github.com/santiksmaktiks-ship-it/-/actions/runs/43269820705) and again after pinning action SHAs on run [#10](https://github.com/santiksmaktiks-ship-it/-/actions/runs/43283097663).
 - The verified runner was Microsoft Windows Server 2025 x64, not a clean Windows 10/11 desktop installation.
 - CI success is not equivalent to acceptance on a clean Windows desktop.
 - Before release, perform a separate manual smoke test on clean Windows 10 and Windows 11 x64 systems, including install, launch, update, uninstall, and portable-mode checks.
@@ -35,7 +35,8 @@ These decisions keep the initial release honest and avoid integrations that cann
 
 ## GitHub Actions runtime
 
-- Use `actions/checkout@v7.0.1` and `actions/setup-node@v7.1.0` in the readiness workflow.
+- Pin `actions/checkout` to commit `3d3c42e5aac5ba805825da76410c181273ba90b1` (v7.0.1) and `actions/setup-node` to commit `949feb2413d6458794dcd2491c4babbbce0c15c1` (v7.1.0) in the readiness workflow.
+- Dependabot is configured for weekly GitHub Actions and npm dependency update pull requests.
 - These releases use the Node 24 action runtime; the setup-node action release notes describe the Node 24 migration and minimum runner requirements.
 - Keep `persist-credentials: false` on checkout when workflow steps do not need authenticated Git operations.
 - Keep `package-manager-cache: false` until a committed package manifest and explicit dependency cache policy exist.
